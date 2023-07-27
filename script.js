@@ -419,8 +419,6 @@ const questions = [
     }
   }
   
-  
-
   function endGame() {
     questionElement.textContent = "Game Over";
     choicesElement.innerHTML = "";
