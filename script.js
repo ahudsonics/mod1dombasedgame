@@ -110,7 +110,7 @@ const questions = [
     },
     {
       question: "Who am I?",
-      imageSrc: "images/chiang_kai_shek.jpg",
+      imageSrc: "images/chiangkaishek.jpg",
       answer: "Chiang Kai Shek",
       choices: [
         "Chinese revolutionary leader",
@@ -139,7 +139,7 @@ const questions = [
       choices: [
         "Queen of Ancient Egypt",
         "First woman to fly solo across the Atlantic Ocean",
-        "Current Queen of the United Kingdom",
+        "Previous Queen of the United Kingdom",
         "Invented the computer",
       ],
       correctChoice: 2,
@@ -182,7 +182,7 @@ const questions = [
     },
     {
       question: "Who am I?",
-      imageSrc: "images/george_w_bush.jpg",
+      imageSrc: "images/georgewbush.jpg",
       answer: "George W. Bush",
       choices: [
         "43rd President of the United States",
@@ -399,6 +399,8 @@ const questions = [
       nextQuestionButton.style.display = "block";
     } else {
       resultElement.textContent = "Incorrect! Try again.";
+      setTimeout(switchPlayer, 1500); // Move to the next question after a 1.5 second delay
+      return; // Exit the function early, so it doesn't proceed to display the "next question" button immediately
     }
   }
   
@@ -417,6 +419,8 @@ const questions = [
     }
   }
   
+  
+
   function endGame() {
     questionElement.textContent = "Game Over";
     choicesElement.innerHTML = "";
