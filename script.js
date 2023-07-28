@@ -1,4 +1,3 @@
-
 const questions = [
     {
         question: "Who am I?",
@@ -211,7 +210,9 @@ const questions = [
   let currentQuestionIndex = 0;
   let player1Score = 0;
   let player2Score = 0;
-  
+  let gameMode = "human"; // "human" or "computer"
+
+
   const questionElement = document.getElementById("question");
   const answerElement = document.getElementById("answer");
   const choicesElement = document.getElementById("choices");
@@ -382,6 +383,19 @@ const questions = [
   
       choicesElement.appendChild(document.createElement("br"));
     }
+    if (currentPlayer === 1) {
+      resultElement.textContent = "Player 1's Turn";
+      nextQuestionButton.style.display = "none";
+    } else if (currentPlayer === 2 && gameMode === "human") {
+      resultElement.textContent = "Player 2's Turn";
+      nextQuestionButton.style.display = "none";
+    } else if (currentPlayer === 2 && gameMode === "computer") {
+      resultElement.textContent = "Computer's Turn";
+      nextQuestionButton.style.display = "none";
+      setTimeout(checkComputerAnswer, 1500); // Simulate computer's answer after a 1.5-second delay
+      return; // Exit the function early, so it doesn't proceed to display the "next question" button immediately
+    }
+
   }
   
   function checkAnswer() {
@@ -403,7 +417,36 @@ const questions = [
       return; // Exit the function early, so it doesn't proceed to display the "next question" button immediately
     }
   }
+  function initializeGame() {
+    gameMode = prompt("Choose game mode: Type 'human' for two players or 'computer' for Player 2 to be the computer.", "human");
   
+    if (gameMode !== "human" && gameMode !== "computer") {
+      alert("Invalid game mode selected. Defaulting to two human players.");
+      gameMode = "human";
+    }
+  
+    currentPlayer = 1;
+    currentQuestionIndex = 0;
+    player1Score = 0;
+    player2Score = 0;
+    displayQuestion();
+  }
+  
+  function checkComputerAnswer() {
+    const currentQuestion = questions[currentQuestionIndex];
+    const computerChoice = Math.floor(Math.random() * currentQuestion.choices.length);
+  
+    if (computerChoice === currentQuestion.correctChoice) {
+      player2Score++;
+      resultElement.textContent = "Computer is Correct!";
+      nextQuestionButton.style.display = "block";
+    } else {
+      resultElement.textContent = "Computer's answer is Incorrect!";
+      nextQuestionButton.style.display = "block";
+    }
+  }
+  
+
   function switchPlayer() {
     if (currentPlayer === 1) {
       currentPlayer = 2;
