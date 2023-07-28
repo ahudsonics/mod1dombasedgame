@@ -340,7 +340,25 @@ const questions = [
       }
     }
   }
- 
+  function initializeGame() {
+    const humanModeRadio = document.getElementById("human-mode");
+    const computerModeRadio = document.getElementById("computer-mode");
+  
+    if (humanModeRadio.checked) {
+      gameMode = "human";
+    } else if (computerModeRadio.checked) {
+      gameMode = "computer";
+    } else {
+      gameMode = "human"; // Default to human mode if no selection is made
+    }
+  
+    currentPlayer = 1;
+    currentQuestionIndex = 0;
+    player1Score = 0;
+    player2Score = 0;
+    displayQuestion();
+  }
+  
   
   function initializeGame() {
     currentPlayer = 1;
@@ -395,7 +413,18 @@ const questions = [
       setTimeout(checkComputerAnswer, 1500); // Simulate computer's answer after a 1.5-second delay
       return; // Exit the function early, so it doesn't proceed to display the "next question" button immediately
     }
-
+    if (currentPlayer === 1) {
+      resultElement.textContent = "Player 1's Turn";
+      nextQuestionButton.style.display = "none";
+    } else if (currentPlayer === 2 && gameMode === "human") {
+      resultElement.textContent = "Player 2's Turn";
+      nextQuestionButton.style.display = "none";
+    } else if (currentPlayer === 2 && gameMode === "computer") {
+      resultElement.textContent = "Computer's Turn";
+      nextQuestionButton.style.display = "none";
+      setTimeout(checkComputerAnswer, 1500); // Simulate computer's answer after a 1.5-second delay
+      return; // Exit the function early, so it doesn't proceed to display the "next question" button immediately
+    }
   }
   
   function checkAnswer() {
