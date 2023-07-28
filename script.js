@@ -210,7 +210,8 @@ const questions = [
   let player1Score = 0;
   let player2Score = 0;
   let gameMode = "human"; // "human" or "computer"
-  
+
+
   const questionElement = document.getElementById("question");
   const answerElement = document.getElementById("answer");
   const choicesElement = document.getElementById("choices");
@@ -222,16 +223,6 @@ const questions = [
     currentQuestionIndex = 0;
     player1Score = 0;
     player2Score = 0;
-    const humanModeRadio = document.getElementById("human-mode");
-    const computerModeRadio = document.getElementById("computer-mode");
-  
-    if (humanModeRadio.checked) {
-      gameMode = "human";
-    } else if (computerModeRadio.checked) {
-      gameMode = "computer";
-    } else {
-      gameMode = "human"; // Default to human mode if no selection is made
-    }
     displayQuestion();
   }
   
@@ -244,34 +235,30 @@ const questions = [
     const imageElement = document.createElement("img");
     imageElement.src = currentQuestion.imageSrc;
     imageElement.alt = "Person";
-    imageElement.style.maxWidth = "100%"; // Scale the image to fit the container
     choicesElement.appendChild(imageElement);
   
     if (currentPlayer === 1) {
       resultElement.textContent = "Player 1's Turn";
       nextQuestionButton.style.display = "none";
-    } else if (currentPlayer === 2 && gameMode === "human") {
+    } else {
       resultElement.textContent = "Player 2's Turn";
       nextQuestionButton.style.display = "none";
-    } else if (currentPlayer === 2 && gameMode === "computer") {
-      resultElement.textContent = "Computer's Turn";
-      nextQuestionButton.style.display = "none";
-      setTimeout(checkComputerAnswer, 1500); // Simulate computer's answer after a 1.5-second delay
-      return; // Exit the function early, so it doesn't proceed to display the "next question" button immediately
     }
   
-    for (let i = 0; i < currentQuestion.choices.length; i++) {
-      const radioInput = document.createElement("input");
-      radioInput.type = "radio";
-      radioInput.name = "choices";
-      radioInput.value = i;
-      choicesElement.appendChild(radioInput);
+    if (currentPlayer === 1) {
+      for (let i = 0; i < currentQuestion.choices.length; i++) {
+        const radioInput = document.createElement("input");
+        radioInput.type = "radio";
+        radioInput.name = "choices";
+        radioInput.value = i;
+        choicesElement.appendChild(radioInput);
   
-      const label = document.createElement("label");
-      label.textContent = currentQuestion.choices[i];
-      choicesElement.appendChild(label);
+        const label = document.createElement("label");
+        label.textContent = currentQuestion.choices[i];
+        choicesElement.appendChild(label);
   
-      choicesElement.appendChild(document.createElement("br"));
+        choicesElement.appendChild(document.createElement("br"));
+      }
     }
   }
   
@@ -290,22 +277,6 @@ const questions = [
       nextQuestionButton.style.display = "block";
     } else {
       resultElement.textContent = "Incorrect! Try again.";
-      setTimeout(switchPlayer, 1500); // Move to the next question after a 1.5-second delay
-      return; // Exit the function early, so it doesn't proceed to display the "next question" button immediately
-    }
-  }
-  
-  function checkComputerAnswer() {
-    const currentQuestion = questions[currentQuestionIndex];
-    const computerChoice = Math.floor(Math.random() * currentQuestion.choices.length);
-  
-    if (computerChoice === currentQuestion.correctChoice) {
-      player2Score++;
-      resultElement.textContent = "Computer is Correct!";
-      nextQuestionButton.style.display = "block";
-    } else {
-      resultElement.textContent = "Computer's answer is Incorrect!";
-      nextQuestionButton.style.display = "block";
     }
   }
   
@@ -331,8 +302,216 @@ const questions = [
     nextQuestionButton.style.display = "none";
   }
   
+
+  function displayQuestion() {
+    const currentQuestion = questions[currentQuestionIndex];
+    questionElement.textContent = currentQuestion.question;
+    answerElement.value = "";
+    choicesElement.innerHTML = "";
+  
+    const imageElement = document.createElement("img");
+    imageElement.src = currentQuestion.imageSrc;
+    imageElement.alt = "Person";
+    imageElement.style.maxWidth = "100%"; // Scale the image to fit the container
+    choicesElement.appendChild(imageElement);
+  
+    if (currentPlayer === 1) {
+      resultElement.textContent = "Player 1's Turn";
+      nextQuestionButton.style.display = "none";
+    } else {
+      resultElement.textContent = "Player 2's Turn";
+      nextQuestionButton.style.display = "none";
+    }
+  
+    if (currentPlayer === 1) {
+      for (let i = 0; i < currentQuestion.choices.length; i++) {
+        const radioInput = document.createElement("input");
+        radioInput.type = "radio";
+        radioInput.name = "choices";
+        radioInput.value = i;
+        choicesElement.appendChild(radioInput);
+  
+        const label = document.createElement("label");
+        label.textContent = currentQuestion.choices[i];
+        choicesElement.appendChild(label);
+  
+        choicesElement.appendChild(document.createElement("br"));
+      }
+    }
+  }
+  function initializeGame() {
+    const humanModeRadio = document.getElementById("human-mode");
+    const computerModeRadio = document.getElementById("computer-mode");
+  
+    if (humanModeRadio.checked) {
+      gameMode = "human";
+    } else if (computerModeRadio.checked) {
+      gameMode = "computer";
+    } else {
+      gameMode = "human"; // Default to human mode if no selection is made
+    }
+  
+    currentPlayer = 1;
+    currentQuestionIndex = 0;
+    player1Score = 0;
+    player2Score = 0;
+    displayQuestion();
+  }
+  
+  
+  function initializeGame() {
+    currentPlayer = 1;
+    currentQuestionIndex = 0;
+    player1Score = 0;
+    player2Score = 0;
+    displayQuestion();
+  }
+  
+  function displayQuestion() {
+    const currentQuestion = questions[currentQuestionIndex];
+    questionElement.textContent = currentQuestion.question;
+    answerElement.value = "";
+    choicesElement.innerHTML = "";
+  
+    const imageElement = document.createElement("img");
+    imageElement.src = currentQuestion.imageSrc;
+    imageElement.alt = "Person";
+    imageElement.style.maxWidth = "100%"; // Scale the image to fit the container
+    choicesElement.appendChild(imageElement);
+  
+    if (currentPlayer === 1) {
+      resultElement.textContent = "Player 1's Turn";
+      nextQuestionButton.style.display = "none";
+    } else {
+      resultElement.textContent = "Player 2's Turn";
+      nextQuestionButton.style.display = "none";
+    }
+  
+    for (let i = 0; i < currentQuestion.choices.length; i++) {
+      const radioInput = document.createElement("input");
+      radioInput.type = "radio";
+      radioInput.name = "choices";
+      radioInput.value = i;
+      choicesElement.appendChild(radioInput);
+  
+      const label = document.createElement("label");
+      label.textContent = currentQuestion.choices[i];
+      choicesElement.appendChild(label);
+  
+      choicesElement.appendChild(document.createElement("br"));
+    }
+    if (currentPlayer === 1) {
+      resultElement.textContent = "Player 1's Turn";
+      nextQuestionButton.style.display = "none";
+    } else if (currentPlayer === 2 && gameMode === "human") {
+      resultElement.textContent = "Player 2's Turn";
+      nextQuestionButton.style.display = "none";
+    } else if (currentPlayer === 2 && gameMode === "computer") {
+      resultElement.textContent = "Computer's Turn";
+      nextQuestionButton.style.display = "none";
+      setTimeout(checkComputerAnswer, 1500); // Simulate computer's answer after a 1.5-second delay
+      return; // Exit the function early, so it doesn't proceed to display the "next question" button immediately
+    }
+    if (currentPlayer === 1) {
+      resultElement.textContent = "Player 1's Turn";
+      nextQuestionButton.style.display = "none";
+    } else if (currentPlayer === 2 && gameMode === "human") {
+      resultElement.textContent = "Player 2's Turn";
+      nextQuestionButton.style.display = "none";
+    } else if (currentPlayer === 2 && gameMode === "computer") {
+      resultElement.textContent = "Computer's Turn";
+      nextQuestionButton.style.display = "none";
+      setTimeout(checkComputerAnswer, 1500); // Simulate computer's answer after a 1.5-second delay
+      return; // Exit the function early, so it doesn't proceed to display the "next question" button immediately
+    }
+  }
+  
+  function checkAnswer() {
+    const currentQuestion = questions[currentQuestionIndex];
+    const playerAnswer = answerElement.value.trim();
+    const selectedChoiceIndex = parseInt(document.querySelector('input[name="choices"]:checked').value);
+  
+    if (currentPlayer === 1 && playerAnswer.toLowerCase() === currentQuestion.answer.toLowerCase()) {
+      player1Score++;
+      resultElement.textContent = "Player 1 is Correct!";
+      nextQuestionButton.style.display = "block";
+    } else if (currentPlayer === 2 && selectedChoiceIndex === currentQuestion.correctChoice) {
+      player2Score++;
+      resultElement.textContent = "Player 2 is Correct!";
+      nextQuestionButton.style.display = "block";
+    } else {
+      resultElement.textContent = "Incorrect! Try again.";
+      setTimeout(switchPlayer, 1500); // Move to the next question after a 1.5 second delay
+      return; // Exit the function early, so it doesn't proceed to display the "next question" button immediately
+    }
+  }
+  function initializeGame() {
+    gameMode = prompt("Choose game mode: Type 'human' for two players or 'computer' for Player 2 to be the computer.", "human");
+  
+    if (gameMode !== "human" && gameMode !== "computer") {
+      alert("Invalid game mode selected. Defaulting to two human players.");
+      gameMode = "human";
+    }
+  
+    currentPlayer = 1;
+    currentQuestionIndex = 0;
+    player1Score = 0;
+    player2Score = 0;
+    displayQuestion();
+  }
+  
+  function checkComputerAnswer() {
+    const currentQuestion = questions[currentQuestionIndex];
+    const computerChoice = Math.floor(Math.random() * currentQuestion.choices.length);
+  
+    if (computerChoice === currentQuestion.correctChoice) {
+      player2Score++;
+      resultElement.textContent = "Computer is Correct!";
+      nextQuestionButton.style.display = "block";
+    } else {
+      resultElement.textContent = "Computer's answer is Incorrect!";
+      nextQuestionButton.style.display = "block";
+    }
+  }
+  function checkComputerAnswer() {
+    const currentQuestion = questions[currentQuestionIndex];
+    const computerChoice = Math.floor(Math.random() * currentQuestion.choices.length);
+  
+    if (computerChoice === currentQuestion.correctChoice) {
+      player2Score++;
+      resultElement.textContent = "Computer is Correct!";
+    } else {
+      resultElement.textContent = "Computer's answer is Incorrect!";
+    }
+  
+    // Wait for a short delay before moving on to the next question
+    setTimeout(switchPlayer, 1500);
+  } 
+
+  function switchPlayer() {
+    if (currentPlayer === 1) {
+      currentPlayer = 2;
+    } else {
+      currentPlayer = 1;
+    }
+    currentQuestionIndex++;
+  
+    if (currentQuestionIndex >= questions.length) {
+      endGame();
+    } else {
+      displayQuestion();
+    }
+  }
+  
+  function endGame() {
+    questionElement.textContent = "Game Over";
+    choicesElement.innerHTML = "";
+    resultElement.textContent = `Player 1 Score: ${player1Score} | Player 2 Score: ${player2Score}`;
+    nextQuestionButton.style.display = "none";
+  }
+
   document.getElementById("submit-answer").addEventListener("click", checkAnswer);
   nextQuestionButton.addEventListener("click", switchPlayer);
   
-  initializeGame();  
-  
+
+  initializeGame();
